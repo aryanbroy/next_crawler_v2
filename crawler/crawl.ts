@@ -1,4 +1,6 @@
-import { PlaywrightCrawler } from "crawlee";
+import { Dataset, PlaywrightCrawler } from "crawlee";
+import path from "path";
+import * as fs from "fs/promises";
 
 const crawler = new PlaywrightCrawler({
   requestHandler: async ({ page }) => {
@@ -38,13 +40,23 @@ const crawler = new PlaywrightCrawler({
         return videoDetail;
       }
     );
-    console.log(videoDetails);
+    // console.log(videoDetails);
+    await Dataset.pushData(videoDetails);
+
+    const datadir = path.join(process.cwd(), "data");
+    await fs.mkdir(datadir, { recursive: true });
+    await fs.writeFile(
+      path.join(datadir, "crawled-data.json"),
+      JSON.stringify(videoDetails)
+    );
+
+    console.log("Crawling finished");
   },
 });
 
 async function runCrawler() {
   await crawler.run([
-    "https://www.youtube.com/playlist?list=PLRD1Niz0lz1sfeX5UEGzkC3HJGpPOE96b",
+    "https://www.youtube.com/playlist?list=PLA1PbPOIrviLBEQpomRD3J9L6UgCS1eWl",
   ]);
 }
 
