@@ -54,10 +54,24 @@ const crawler = new PlaywrightCrawler({
   },
 });
 
-async function runCrawler() {
+export async function runCrawler(url: string) {
   await crawler.run([
-    "https://www.youtube.com/playlist?list=PLA1PbPOIrviLBEQpomRD3J9L6UgCS1eWl",
+    // "https://www.youtube.com/playlist?list=PLA1PbPOIrviLBEQpomRD3J9L6UgCS1eWl",
+    url,
   ]);
 }
 
-runCrawler();
+// runCrawler(
+//   "https://www.youtube.com/playlist?list=PLA1PbPOIrviLBEQpomRD3J9L6UgCS1eWl"
+// );
+
+if (require.main === module) {
+  const startUrl = process.argv[2];
+  if (!startUrl) {
+    console.log("Please provide a start url");
+    process.exit(1);
+  }
+  runCrawler(startUrl);
+} else {
+  console.log("Hello this is something else");
+}
