@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { AlertCircle, PlayCircle } from "lucide-react";
+import axios from "axios";
 
 interface Video {
   title: string;
@@ -103,6 +104,15 @@ export default function DarkModePlaylistAnalyzerLineChart() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const initialPlaylistData = async () => {
+      const res = await axios.get("/api/crawler");
+      const data = res.data;
+      console.log(data);
+    };
+    initialPlaylistData();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
