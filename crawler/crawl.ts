@@ -5,6 +5,8 @@ import * as fs from "fs/promises";
 type VideoDetail = {
   title: string;
   thumbnail: string;
+  channelName: string;
+  totalViews: number;
 };
 
 export async function runCrawler(url: string) {
@@ -36,7 +38,6 @@ export async function runCrawler(url: string) {
               ? (videoThumbnailElement as HTMLImageElement).src
               : "";
 
-
             const channelNameElement = insideVideoDiv?.querySelector(
               "div#meta > ytd-video-meta-block > div#metadata > div#byline-container > ytd-channel-name > div#container > div#text-container > yt-formatted-string > a"
             );
@@ -49,14 +50,25 @@ export async function runCrawler(url: string) {
               "div#content > div#container > div#meta > ytd-video-meta-block > div#metadata > div#byline-container > yt-formatted-string > span"
             );
 
-            const views = viewsElement
+            const viewsString = viewsElement
               ? (viewsElement as HTMLElement).textContent
               : "";
+
+            const views = viewsString?.split(" ")[0];
+            let totalViews;
+            if (views?.includes("K")) {
+              totalViews = Number(views.slice(0, views.length - 1)) * 1000;
+            } else if (views?.includes("M")) {
+              totalViews = Number(views.slice(0, views.length - 1)) * 1000000;
+            } else {
+              totalViews = Number(views);
+            }
+
             const result = {
               title: videoTitle,
               thumbnail: videoThumbnail,
-              channelName,
-              views,
+              channelName: channelName || "",
+              totalViews,
             };
 
             return result;
