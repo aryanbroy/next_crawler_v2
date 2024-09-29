@@ -36,9 +36,27 @@ export async function runCrawler(url: string) {
               ? (videoThumbnailElement as HTMLImageElement).src
               : "";
 
+
+            const channelNameElement = insideVideoDiv?.querySelector(
+              "div#meta > ytd-video-meta-block > div#metadata > div#byline-container > ytd-channel-name > div#container > div#text-container > yt-formatted-string > a"
+            );
+
+            const channelName = channelNameElement
+              ? (channelNameElement as HTMLElement).textContent
+              : "";
+
+            const viewsElement = insideVideoDiv?.querySelector(
+              "div#content > div#container > div#meta > ytd-video-meta-block > div#metadata > div#byline-container > yt-formatted-string > span"
+            );
+
+            const views = viewsElement
+              ? (viewsElement as HTMLElement).textContent
+              : "";
             const result = {
               title: videoTitle,
               thumbnail: videoThumbnail,
+              channelName,
+              views,
             };
 
             return result;
