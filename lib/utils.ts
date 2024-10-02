@@ -5,6 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const YT_REGEX = new RegExp(
-  "^(?:https?://)?(?:www.)?youtube.com/playlist?list=[A-Za-z0-9_-]+$"
-);
+export function validateYoutubeUrl(url: string) {
+  const regex =
+    /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/(playlist\?list=)([A-Za-z0-9_-]+)$/;
+  return regex.test(url);
+}

@@ -12,15 +12,16 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, PlayCircle } from "lucide-react";
 import axios, { AxiosError } from "axios";
-import { YT_REGEX } from "@/lib/utils";
+import { validateYoutubeUrl } from "@/lib/utils";
 
 interface Video {
   channelName: string;
   title: string;
   totalViews: number;
   thumbnail: string;
+  videoLink: string;
 }
 
 interface PlaylistData {
@@ -50,7 +51,7 @@ export default function DarkModePlaylistAnalyzerLineChart() {
     setPlaylistUrl("");
 
     try {
-      const isYtPlaylistLink = YT_REGEX.test(playlistUrl);
+      const isYtPlaylistLink = validateYoutubeUrl(playlistUrl);
       if (!isYtPlaylistLink) {
         setError("Provided link is not a youtube playlist link!");
         return;
@@ -129,7 +130,11 @@ export default function DarkModePlaylistAnalyzerLineChart() {
                 <CardContent>
                   <ul className="space-y-4">
                     {playlistData.videos.map((video, index) => (
-                      <li key={index} className="flex items-start space-x-4">
+                      <li
+                        key={index}
+                        className="flex items-start space-x-4 hover:bg-gray-800 p-4 rounded-lg"
+                        onClick={() => window.open(video.videoLink, "_blank")}
+                      >
                         <img
                           src={video.thumbnail}
                           alt={`Thumbnail for ${video.title}`}
@@ -143,6 +148,7 @@ export default function DarkModePlaylistAnalyzerLineChart() {
                             {video.totalViews.toLocaleString()} views
                           </p>
                         </div>
+                        <PlayCircle className="h-6 w-6 text-blue-500" />
                       </li>
                     ))}
                   </ul>
