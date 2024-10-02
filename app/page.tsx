@@ -12,87 +12,81 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { AlertCircle, PlayCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import axios from "axios";
 
 interface Video {
+  channelName: string;
   title: string;
-  views: number;
-  likes: number;
-  thumbnailUrl: string;
+  totalViews: number;
+  thumbnail: string;
 }
 
 interface PlaylistData {
-  title: string;
-  videoCount: number;
-  totalViews: number;
   videos: Video[];
 }
 
 const mockPlaylistData: PlaylistData = {
-  title: "Best of Classical Music",
-  videoCount: 10,
-  totalViews: 16500000,
   videos: [
     {
+      channelName: "Random channel",
       title: "Mozart - Symphony No. 40",
-      views: 1500000,
-      likes: 75000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1500000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random channel",
       title: "Beethoven - Moonlight Sonata",
-      views: 2000000,
-      likes: 100000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 2000000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Bach - Toccata and Fugue in D minor",
-      views: 1800000,
-      likes: 90000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1800000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Vivaldi - Four Seasons",
-      views: 2200000,
-      likes: 110000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 8000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Tchaikovsky - 1812 Overture",
-      views: 1300000,
-      likes: 65000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1300000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Chopin - Nocturne Op. 9 No. 2",
-      views: 1700000,
-      likes: 85000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1700000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Debussy - Clair de Lune",
-      views: 1900000,
-      likes: 95000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1900000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Wagner - Ride of the Valkyries",
-      views: 1600000,
-      likes: 80000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1600000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Handel - Messiah: Hallelujah Chorus",
-      views: 1400000,
-      likes: 70000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1400000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
     {
+      channelName: "Random name",
       title: "Strauss II - The Blue Danube",
-      views: 1100000,
-      likes: 55000,
-      thumbnailUrl: "/placeholder.svg?height=90&width=120",
+      totalViews: 1100000,
+      thumbnail: "/placeholder.svg?height=90&width=120",
     },
   ],
 };
@@ -110,6 +104,7 @@ export default function DarkModePlaylistAnalyzerLineChart() {
       const res = await axios.get("/api/crawler");
       const data = res.data;
       console.log(data);
+      setPlaylistData({ videos: data });
     };
     initialPlaylistData();
   }, []);
@@ -182,18 +177,6 @@ export default function DarkModePlaylistAnalyzerLineChart() {
             <section className="space-y-8">
               <Card className="border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-white">
-                    {playlistData.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-gray-300">
-                  <p>Number of videos: {playlistData.videoCount}</p>
-                  <p>Total views: {playlistData.totalViews.toLocaleString()}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-gray-700">
-                <CardHeader>
                   <CardTitle className="text-white">Video List</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -201,7 +184,7 @@ export default function DarkModePlaylistAnalyzerLineChart() {
                     {playlistData.videos.map((video, index) => (
                       <li key={index} className="flex items-start space-x-4">
                         <img
-                          src={video.thumbnailUrl}
+                          src={video.thumbnail}
                           alt={`Thumbnail for ${video.title}`}
                           className="w-30 h-20 object-cover rounded"
                         />
@@ -210,13 +193,9 @@ export default function DarkModePlaylistAnalyzerLineChart() {
                             {video.title}
                           </h3>
                           <p className="text-sm text-gray-400">
-                            {video.views.toLocaleString()} views
-                          </p>
-                          <p className="text-sm text-gray-400">
-                            {video.likes.toLocaleString()} likes
+                            {video.totalViews.toLocaleString()} views
                           </p>
                         </div>
-                        <PlayCircle className="text-blue-400" />
                       </li>
                     ))}
                   </ul>
@@ -251,46 +230,10 @@ export default function DarkModePlaylistAnalyzerLineChart() {
                       />
                       <Line
                         type="monotone"
-                        dataKey="views"
+                        dataKey="totalViews"
                         stroke="#60A5FA"
                         strokeWidth={2}
                         dot={{ fill: "#60A5FA", strokeWidth: 2 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-
-              <Card className="border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-white">
-                    Likes Distribution
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="h-[400px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={playlistData.videos}>
-                      <XAxis
-                        dataKey="title"
-                        stroke="#9CA3AF"
-                        angle={-45}
-                        textAnchor="end"
-                        height={100}
-                      />
-                      <YAxis stroke="#9CA3AF" />
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: "#1F2937",
-                          border: "none",
-                          color: "#fff",
-                        }}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="likes"
-                        stroke="#34D399"
-                        strokeWidth={2}
-                        dot={{ fill: "#34D399", strokeWidth: 2 }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
