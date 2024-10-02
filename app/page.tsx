@@ -26,76 +26,9 @@ interface PlaylistData {
   videos: Video[];
 }
 
-const mockPlaylistData: PlaylistData = {
-  videos: [
-    {
-      channelName: "Random channel",
-      title: "Mozart - Symphony No. 40",
-      totalViews: 1500000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random channel",
-      title: "Beethoven - Moonlight Sonata",
-      totalViews: 2000000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Bach - Toccata and Fugue in D minor",
-      totalViews: 1800000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Vivaldi - Four Seasons",
-      totalViews: 8000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Tchaikovsky - 1812 Overture",
-      totalViews: 1300000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Chopin - Nocturne Op. 9 No. 2",
-      totalViews: 1700000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Debussy - Clair de Lune",
-      totalViews: 1900000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Wagner - Ride of the Valkyries",
-      totalViews: 1600000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Handel - Messiah: Hallelujah Chorus",
-      totalViews: 1400000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-    {
-      channelName: "Random name",
-      title: "Strauss II - The Blue Danube",
-      totalViews: 1100000,
-      thumbnail: "/placeholder.svg?height=90&width=120",
-    },
-  ],
-};
-
 export default function DarkModePlaylistAnalyzerLineChart() {
   const [playlistUrl, setPlaylistUrl] = useState("");
-  const [playlistData, setPlaylistData] = useState<PlaylistData | null>(
-    mockPlaylistData
-  );
+  const [playlistData, setPlaylistData] = useState<PlaylistData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
