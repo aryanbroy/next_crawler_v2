@@ -108,7 +108,7 @@ if (require.main === module) {
   }
   const isYtUrl = YT_REGEX.test(startUrl);
   if (!isYtUrl) {
-    console.log("Provide link is not a playlist link!");
+    console.log("Provided link is not a playlist link!");
     process.exit(1);
   }
   runCrawler(startUrl)

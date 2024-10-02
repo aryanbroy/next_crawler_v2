@@ -13,7 +13,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { AlertCircle } from "lucide-react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { YT_REGEX } from "@/lib/utils";
 
 interface Video {
   channelName: string;
@@ -49,6 +50,11 @@ export default function DarkModePlaylistAnalyzerLineChart() {
     setPlaylistUrl("");
 
     try {
+      const isYtPlaylistLink = YT_REGEX.test(playlistUrl);
+      if (!isYtPlaylistLink) {
+        setError("Provided link is not a youtube playlist link!");
+        return;
+      }
       const res = await axios.post("/api/crawler/runCrawl", {
         url: playlistUrl,
       });
@@ -56,9 +62,14 @@ export default function DarkModePlaylistAnalyzerLineChart() {
       setPlaylistData({ videos: data });
     } catch (err) {
       console.log(err);
-      setError(
-        "Failed to analyze playlist. Please check the URL and try again."
-      );
+      if (err instanceof AxiosError) {
+        setError(
+          err.response?.data.message ||
+            "Error occurred while fetching playlist data."
+        );
+      } else {
+        setError("Error occurred! Please try again later.");
+      }
     } finally {
       setIsLoading(false);
     }
