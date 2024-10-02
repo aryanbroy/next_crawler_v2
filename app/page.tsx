@@ -113,6 +113,7 @@ export default function DarkModePlaylistAnalyzerLineChart() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setPlaylistUrl("");
 
     try {
       const res = await axios.post("/api/crawler/runCrawl", {
