@@ -115,9 +115,11 @@ export default function DarkModePlaylistAnalyzerLineChart() {
     setError("");
 
     try {
-      // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setPlaylistData(mockPlaylistData);
+      const res = await axios.post("/api/crawler/runCrawl", {
+        url: playlistUrl,
+      });
+      const data = res.data;
+      setPlaylistData({ videos: data });
     } catch (err) {
       console.log(err);
       setError(
