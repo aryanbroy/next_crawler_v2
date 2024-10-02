@@ -1,6 +1,7 @@
 import { Dataset, PlaywrightCrawler } from "crawlee";
 import path from "path";
 import * as fs from "fs/promises";
+import { YT_REGEX } from "@/lib/utils";
 
 type VideoDetail = {
   title: string;
@@ -105,6 +106,11 @@ if (require.main === module) {
     console.log("Please provide a start url");
     process.exit(1);
   }
+  const isYtUrl = YT_REGEX.test(startUrl);
+  if (!isYtUrl) {
+    console.log("Provide link is not a playlist link!");
+    process.exit(1);
+  }
   runCrawler(startUrl)
     .then((results) => {
       console.log("---RESULT_START---");
@@ -113,6 +119,7 @@ if (require.main === module) {
     })
     .catch((error) => {
       console.log(error);
+      console.log("Not a youtube link");
       process.exit(1);
     });
 } else {

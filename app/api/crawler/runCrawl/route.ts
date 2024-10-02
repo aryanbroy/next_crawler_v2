@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { exec } from "child_process";
 import { promisify } from "util";
-// import path from "path";
-// import * as fs from "fs/promises";
+
+type CrawlError = {
+  stdout: string;
+};
 
 const execPromise = promisify(exec);
 
@@ -31,7 +33,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.log(error);
     return NextResponse.json(
-      { message: "Error on runCrawler" },
+      {
+        message:
+          (error as CrawlError).stdout || "Error while running the crawler",
+      },
       { status: 402 }
     );
   }
