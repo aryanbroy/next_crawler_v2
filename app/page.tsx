@@ -145,6 +145,9 @@ export default function DarkModePlaylistAnalyzerLineChart() {
                             {video.title}
                           </h3>
                           <p className="text-sm text-gray-400">
+                            {video.channelName}
+                          </p>
+                          <p className="text-sm text-gray-400">
                             {video.totalViews.toLocaleString()} views
                           </p>
                         </div>
